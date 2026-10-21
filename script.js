@@ -31,7 +31,7 @@
   /* ---- Estado global compartilhado ---- */
   var KEY = 'jeito-studio-v2';
   var uid = 0;
-  var S = null;          // estado do Studio
+  var S = null;
   var started = false;
   var lastView = null;
   var studioBound = false;
@@ -309,10 +309,9 @@
     if (status) { status.textContent = ''; status.className = 'sp-status'; }
 
     if (SP.step === 1) {
-      var nome = (document.getElementById('sp-nome') || {}).value || '';
-      var email = (document.getElementById('sp-email') || {}).value || '';
+      var nome = ((document.getElementById('sp-nome') || {}).value || '').trim();
+      var email = ((document.getElementById('sp-email') || {}).value || '').trim();
       var senha = (document.getElementById('sp-senha') || {}).value || '';
-      nome = nome.trim(); email = email.trim();
       if (nome.length < 2) return err('Informe seu nome.');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return err('Informe um e-mail válido.');
       if (senha.length < 6) return err('A senha precisa ter pelo menos 6 caracteres.');
@@ -346,10 +345,10 @@
     var svcs = SP.servicos.filter(function (s) { return s.nome; });
 
     var els = [];
-    els.push({ id: 0, type: 'selo', text: cat, sub: '', img: '', fx: cp(FX_DEF) });
-    els.push({ id: 0, type: 'titulo', text: nome, sub: '', img: '', fx: cp(FX_DEF) });
-    els.push({ id: 0, type: 'texto', text: 'Bem-vindo(a). Conheça nossos serviços e fale com a gente.', sub: '', img: '', fx: cp(FX_DEF) });
-    els.push({ id: 0, type: 'botao', text: 'Falar no WhatsApp', sub: '', img: '', fx: cp(FX_DEF) });
+    els.push({ id: 0, type: 'selo',    text: cat,  sub: '', img: '', fx: cp(FX_DEF) });
+    els.push({ id: 0, type: 'titulo',  text: nome, sub: '', img: '', fx: cp(FX_DEF) });
+    els.push({ id: 0, type: 'texto',   text: 'Bem-vindo(a). Conheça nossos serviços e fale com a gente.', sub: '', img: '', fx: cp(FX_DEF) });
+    els.push({ id: 0, type: 'botao',   text: 'Falar no WhatsApp', sub: '', img: '', fx: cp(FX_DEF) });
     if (svcs.length) els.push({ id: 0, type: 'separador', text: '', sub: '', img: '', fx: cp(FX_DEF) });
     svcs.forEach(function (s) {
       var meta = [s.dur, s.preco].filter(Boolean).join(' · ');
@@ -366,7 +365,7 @@
     H.length = 0;
     sel = null;
     SP = null;
-    started = false;         // força bootStudio ao navegar
+    started = false;
     location.hash = '#studio';
   }
 
@@ -728,4 +727,246 @@
       h = '<h2>Fundos</h2><div class="sw">' + Object.keys(BG).map(function (k) {
         return '<button data-bg="' + k + '" aria-label="Fundo ' + BG[k].n + '" aria-pressed="' + (S.bg == k) + '" style="background:' + BG[k].bg + '"></button>';
       }).join('') + '</div>';
-   
+    }
+    if (tab === 'md') {
+      h = '<h2>Modelos</h2><p class="hint">Aplicar um modelo troca o conteúdo da página. Você pode desfazer.</p><div class="list">' +
+        Object.keys(T).map(function (k) { return '<button class="b" data-tpl="' + k + '">' + T[k].n + '</button>'; }).join('') + '</div>';
+    }
+    if (tab === 'fx') h = fxPanel();
+
+    tpEl.innerHTML = h;
+    if (tab === 'fx') {
+      requestAnimationFrame(function () {
+        var fp = document.getElementById('fprev');
+        if (fp) fp.classList.add('in');
+      });
+    }
+  }
+
+  /* ---- cópia ---- */
+  function copyText(txt) {
+    function done() { msg('Configuração dos efeitos copiada.'); }
+    function fail() { msg('Não foi possível copiar automaticamente. Selecione e copie do console.'); console.log(txt); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done, fail);
+    } else {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta); done();
+      } catch (e) { fail(); }
+    }
+  }
+
+  /* ---- ações ---- */
+  function del() {
+    if (sel == null) return;
+    commit(function () { S.els.splice(sel, 1); sel = null; }, 'Elemento excluído.');
+  }
+  function mv(d) {
+    var j = sel + d;
+    if (sel == null || j < 0 || j >= S.els.length) return;
+    commit(function () {
+      var m = S.els.splice(sel, 1)[0];
+      S.els.splice(j, 0, m);
+      sel = j;
+    }, null, true);
+  }
+
+  /* ---- handlers do Studio ---- */
+  function bindStudioHandlers() {
+    document.addEventListener('click', function (ev) {
+      var studio = document.getElementById('studio');
+      if (!studio || studio.hidden) return;
+      var t = ev.target.closest('[data-tab],[data-add],[data-font],[data-al],[data-bg],[data-tpl],[data-fx],[data-fxall],[data-pg],[data-dir],[data-copy],#replay,.el');
+      if (!t) return;
+
+      if (t.id === 'replay') {
+        var fp = document.getElementById('fprev');
+        if (fp) { fp.classList.remove('in'); void fp.offsetWidth; fp.classList.add('in'); }
+        return;
+      }
+      if (t.dataset.tab) { tab = t.dataset.tab; tools(); return; }
+
+      if (t.dataset.fx !== undefined && t.dataset.fx !== '') {
+        if (sel == null) return;
+        var k = t.dataset.fx, v = t.dataset.v;
+        commit(function () { S.els[sel].fx[k] = v; }, null, true);
+        return;
+      }
+      if (t.hasAttribute('data-fxall')) {
+        if (sel == null) return;
+        commit(function () {
+          var base = cp(S.els[sel].fx);
+          S.els.forEach(function (x) { x.fx = cp(base); });
+        }, 'Efeitos aplicados a todos os elementos.', true);
+        return;
+      }
+      if (t.dataset.pg) {
+        var p = t.dataset.pg;
+        commit(function () { S.page[p] = !S.page[p]; }, null, true);
+        return;
+      }
+      if (t.dataset.dir) {
+        commit(function () { S.page.dir = t.dataset.dir; }, null, true);
+        return;
+      }
+      if (t.hasAttribute('data-copy')) {
+        var payload = JSON.stringify({
+          elemento: S.els[sel] ? { tipo: S.els[sel].type, efeitos: S.els[sel].fx } : null,
+          pagina: S.page
+        }, null, 2);
+        copyText(payload);
+        return;
+      }
+      if (t.dataset.add) {
+        var kk = t.dataset.add, d = DEF[kk];
+        commit(function () {
+          var i = sel == null ? S.els.length : sel + 1;
+          S.els.splice(i, 0, mk([kk, d[0], d[1]]));
+          sel = i;
+        }, LBL[kk] + ' adicionado.', true);
+        return;
+      }
+      if (t.dataset.font) { commit(function () { S.font = t.dataset.font; }, 'Estilo de texto aplicado.', true); return; }
+      if (t.dataset.al)   { commit(function () { S.al = t.dataset.al; }); return; }
+      if (t.dataset.bg)   { commit(function () { S.bg = t.dataset.bg; }, 'Fundo aplicado.', true); return; }
+      if (t.dataset.tpl)  {
+        commit(function () { S = fromT(t.dataset.tpl); sel = null; }, 'Modelo aplicado. Use Desfazer para voltar.', true);
+        return;
+      }
+      if (t.classList.contains('el')) {
+        sel = +t.dataset.i; render(true); msg('');
+      }
+    });
+
+    document.addEventListener('input', function (ev) {
+      var studio = document.getElementById('studio');
+      if (!studio || studio.hidden) return;
+      if (ev.target.id === 'pgint' && S) {
+        S.page.int = +ev.target.value;
+        save();
+        var b = BG[S.bg];
+        var pg = document.getElementById('page');
+        if (pg) pg.style.background = pageBG(b);
+        var lab = ev.target.previousElementSibling;
+        if (lab && lab.tagName === 'LABEL') lab.textContent = 'Intensidade — ' + S.page.int + '%';
+      }
+    });
+
+    document.addEventListener('keydown', function (ev) {
+      var studio = document.getElementById('studio');
+      if (!studio || studio.hidden) return;
+      var el = ev.target.closest && ev.target.closest('.el');
+      if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); sel = +el.dataset.i; render(true); }
+      var typing = /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName);
+      if (ev.key === 'Delete' && sel != null && !typing) del();
+      if (ev.key === 'Escape' && sel != null) { sel = null; render(true); }
+    });
+
+    var apply = document.getElementById('apply');
+    if (apply) apply.onclick = function () {
+      if (sel == null) return;
+      var e = S.els[sel]; if (!e) return;
+      var et = document.getElementById('et');
+      var ed = document.getElementById('ed');
+      commit(function () {
+        e = S.els[sel];
+        if (et) e.text = et.value;
+        if (ed) e.sub = ed.value;
+      }, 'Alteração aplicada.');
+    };
+
+    var delBtn = document.getElementById('del');
+    if (delBtn) delBtn.onclick = del;
+    var upBtn = document.getElementById('up');
+    if (upBtn) upBtn.onclick = function () { mv(-1); };
+    var downBtn = document.getElementById('down');
+    if (downBtn) downBtn.onclick = function () { mv(1); };
+
+    var dupBtn = document.getElementById('dup');
+    if (dupBtn) dupBtn.onclick = function () {
+      if (sel == null) return;
+      commit(function () {
+        var c = cp(S.els[sel]); c.id = ++uid; S.els.splice(sel + 1, 0, c); sel++;
+      }, 'Elemento duplicado.', true);
+    };
+
+    var undoBtn = document.getElementById('undo');
+    if (undoBtn) undoBtn.onclick = function () {
+      if (!H.length) return;
+      S = normalize(JSON.parse(H.pop())) || S;
+      if (sel != null && sel >= S.els.length) sel = null;
+      save(); render(); msg('Ação desfeita.');
+    };
+
+    var rmBtn = document.getElementById('rmimg');
+    if (rmBtn) rmBtn.onclick = function () {
+      if (sel == null) return;
+      commit(function () { S.els[sel].img = ''; }, 'Imagem removida.');
+    };
+
+    var eiInput = document.getElementById('ei');
+    if (eiInput) eiInput.onchange = function () {
+      var file = this.files[0], i = sel; this.value = '';
+      if (!file || i == null) return;
+      if (!/^image\/(png|jpeg|webp)$/.test(file.type)) { msg('Use PNG, JPEG ou WebP.'); return; }
+      if (file.size > 1500000) { msg('Imagem grande demais. Use um arquivo de até 1,5 MB.'); return; }
+      var r = new FileReader();
+      r.onload = function () {
+        if (S.els[i]) commit(function () { S.els[i].img = String(r.result); }, 'Imagem adicionada.', true);
+      };
+      r.onerror = function () { msg('Não foi possível ler o arquivo.'); };
+      r.readAsDataURL(file);
+    };
+
+    function view(m) {
+      var frame = document.getElementById('frame');
+      if (frame) frame.classList.toggle('m', m);
+      var vd = document.getElementById('vd');
+      var vm = document.getElementById('vm');
+      if (vd) vd.setAttribute('aria-pressed', !m);
+      if (vm) vm.setAttribute('aria-pressed', m);
+    }
+    var vdBtn = document.getElementById('vd');
+    if (vdBtn) vdBtn.onclick = function () { view(false); };
+    var vmBtn = document.getElementById('vm');
+    if (vmBtn) vmBtn.onclick = function () { view(true); };
+
+    var pg = document.getElementById('page');
+    if (pg) {
+      pg.addEventListener('dragstart', function (e) {
+        var el = e.target.closest('.el');
+        if (el) { drag = +el.dataset.i; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', 'x'); }
+      });
+      pg.addEventListener('dragover', function (e) { if (drag != null) e.preventDefault(); });
+      pg.addEventListener('drop', function (e) {
+        var el = e.target.closest('.el');
+        if (el && drag != null) {
+          e.preventDefault();
+          var to = +el.dataset.i, from = drag; drag = null;
+          if (to !== from) commit(function () {
+            var m = S.els.splice(from, 1)[0];
+            S.els.splice(to, 0, m);
+            sel = to;
+          }, 'Elemento movido.', true);
+        }
+      });
+      pg.addEventListener('dragend', function () { drag = null; });
+    }
+  }
+
+  function bootStudio() {
+    if (!S) S = load() || fromT('branco');
+    sel = null;
+    if (!studioBound) {
+      studioBound = true;
+      bindStudioHandlers();
+    }
+    render();
+  }
+
+  /* ---- iniciar roteador ---- */
+  route();
+})();
