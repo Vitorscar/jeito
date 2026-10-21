@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
+    "@tailwindcss/postcss": "^4.3.3",
+    "gsap": "^3.15.0",
+    "postcss": "^8.5.31",
+    "tailwindcss": "^4.3.3"
+  }
+}

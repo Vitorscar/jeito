@@ -10,7 +10,7 @@
 <meta property="og:description" content="Seu negócio, do seu jeito. Página comercial própria para apresentar serviços, preços e contato.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2320251F'/%3E%3Cpath d='M12 8h8v10a5 5 0 0 1-5 5h-1' stroke='%23D8FF00' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -79,17 +79,185 @@
   <p class="note rev">Exemplos de demonstração, com nomes e valores fictícios.</p>
 </div></section>
 
-<section id="recursos"><div class="w">
-  <h2 class="rev">Tudo o que seu cliente precisa saber, em um só lugar.</h2>
-  <div class="g3 feat">
-    <article class="rev"><h3>Página comercial</h3><p>Um endereço fácil de compartilhar para apresentar sua empresa.</p></article>
-    <article class="rev"><h3>Catálogo de serviços</h3><p>Organize seus serviços, descrições, imagens e preços.</p></article>
-    <article class="rev"><h3>Identidade visual</h3><p>Apresente seu negócio com logotipo, cores e elementos visuais próprios, conforme o plano.</p></article>
-    <article class="rev"><h3>Contato facilitado</h3><p>Direcione os clientes ao WhatsApp e a outros canais configurados.</p></article>
-    <article class="rev"><h3>Agendamentos</h3><p>Facilite o envio e o acompanhamento de solicitações de horário, de acordo com os recursos disponibilizados.</p></article>
-    <article class="rev"><h3>Painel de gestão</h3><p>Atualize informações da empresa e gerencie seus serviços em um único ambiente.</p></article>
+<!-- ============================================================
+     RECURSOS — Glassmorphism premium
+     ============================================================ -->
+<section id="recursos" class="rec-section">
+  <div class="w">
+    <p class="eyebrow rev">O QUE VOCÊ RECEBE</p>
+    <h2 class="rev">Tudo o que seu cliente precisa saber, em um só lugar.</h2>
+    <p class="sub rev">Passe o mouse ou toque nos cards para ver uma demonstração de cada recurso — tudo acontece aqui, sem abrir outra página.</p>
+
+    <div class="rec-grid">
+
+      <!-- 1. Página comercial -->
+      <article class="rec-card rev" data-tilt>
+        <div class="rec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2"/>
+            <path d="M3 9h18M8 4v5"/>
+          </svg>
+        </div>
+        <h3>Página comercial</h3>
+        <p>Um endereço fácil de compartilhar para apresentar sua empresa.</p>
+        <div class="rec-visual rec-page" aria-hidden="true">
+          <div class="rp-hero"></div>
+          <div class="rp-body">
+            <div class="rp-logo">SB</div>
+            <div class="rp-title">Studio Bella</div>
+            <div class="rp-line"></div>
+            <div class="rp-line short"></div>
+            <div class="rp-cta">Agendar horário</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2. Catálogo de serviços -->
+      <article class="rec-card rev" data-tilt>
+        <div class="rec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+          </svg>
+        </div>
+        <h3>Catálogo de serviços</h3>
+        <p>Organize seus serviços, descrições, imagens e preços.</p>
+        <div class="rec-visual rec-cat" aria-hidden="true">
+          <div class="rc-row">
+            <span class="rc-thumb" style="--h:20deg"></span>
+            <span class="rc-name">Corte</span>
+            <span class="rc-price">R$ 50</span>
+          </div>
+          <div class="rc-row">
+            <span class="rc-thumb" style="--h:60deg"></span>
+            <span class="rc-name">Barba</span>
+            <span class="rc-price">R$ 40</span>
+          </div>
+          <div class="rc-row">
+            <span class="rc-thumb" style="--h:120deg"></span>
+            <span class="rc-name">Combo</span>
+            <span class="rc-price">R$ 80</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3. Identidade visual -->
+      <article class="rec-card rev" data-tilt>
+        <div class="rec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2 0-1.5 1-2 2-2h1.5c1.4 0 2.5-1.1 2.5-2.5C20 8 16.4 3 12 3z"/>
+            <circle cx="7.5" cy="10.5" r="1" fill="currentColor"/>
+            <circle cx="12" cy="7.5" r="1" fill="currentColor"/>
+            <circle cx="16.5" cy="10.5" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Identidade visual</h3>
+        <p>Apresente seu negócio com logotipo, cores e elementos visuais próprios, conforme o plano.</p>
+        <div class="rec-visual rec-colors" aria-hidden="true">
+          <div class="sw-row">
+            <button type="button" class="swatch on" style="--c:#FF5A5F" aria-label="Coral"></button>
+            <button type="button" class="swatch" style="--c:#201747" aria-label="Ameixa"></button>
+            <button type="button" class="swatch" style="--c:#A7D94A" aria-label="Oliva"></button>
+            <button type="button" class="swatch" style="--c:#E0A526" aria-label="Âmbar"></button>
+            <button type="button" class="swatch" style="--c:#B4476A" aria-label="Rosa"></button>
+          </div>
+          <div class="sw-preview">
+            <div class="sw-bar" id="rec-color-preview" style="background:#FF5A5F"></div>
+            <div class="sw-bar short"></div>
+            <div class="sw-bar tiny"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4. Contato facilitado -->
+      <article class="rec-card rev" data-tilt>
+        <div class="rec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.8L3 21l1.8-6a8.5 8.5 0 0 1-.8-3.5A8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5z"/>
+          </svg>
+        </div>
+        <h3>Contato facilitado</h3>
+        <p>Direcione os clientes ao WhatsApp e a outros canais configurados.</p>
+        <div class="rec-visual rec-whats" aria-hidden="true">
+          <button type="button" class="wa-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M20.5 3.5A11 11 0 0 0 3.2 17.3L2 22l4.8-1.3A11 11 0 0 0 20.5 3.5zM12 20a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20z"/>
+            </svg>
+            Falar no WhatsApp
+          </button>
+        </div>
+      </article>
+
+      <!-- 5. Agendamentos -->
+      <article class="rec-card rev" data-tilt>
+        <div class="rec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="16" rx="2"/>
+            <path d="M3 10h18M8 3v4M16 3v4"/>
+          </svg>
+        </div>
+        <h3>Agendamentos</h3>
+        <p>Facilite o envio e o acompanhamento de solicitações de horário, de acordo com os recursos disponibilizados.</p>
+        <div class="rec-visual rec-cal" aria-hidden="true">
+          <div class="cal-head"><span>Julho</span><b>2026</b></div>
+          <div class="cal-days">
+            <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+          </div>
+          <div class="cal-grid" id="rec-cal-grid">
+            <button type="button">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button">4</button>
+            <button type="button">5</button>
+            <button type="button" class="off">6</button>
+            <button type="button" class="off">7</button>
+            <button type="button">8</button>
+            <button type="button">9</button>
+            <button type="button">10</button>
+            <button type="button">11</button>
+            <button type="button">12</button>
+            <button type="button" class="off">13</button>
+            <button type="button" class="off">14</button>
+            <button type="button" class="on">15</button>
+            <button type="button">16</button>
+            <button type="button">17</button>
+            <button type="button">18</button>
+            <button type="button">19</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6. Painel de gestão -->
+      <article class="rec-card rev" data-tilt>
+        <div class="rec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>
+          </svg>
+        </div>
+        <h3>Painel de gestão</h3>
+        <p>Atualize informações da empresa e gerencie seus serviços em um único ambiente.</p>
+        <div class="rec-visual rec-dash" aria-hidden="true">
+          <div class="dash-top">
+            <div class="dash-kpi"><b>87%</b><span>ocupação</span></div>
+            <div class="dash-kpi"><b>12</b><span>hoje</span></div>
+          </div>
+          <div class="dash-chart">
+            <span style="--h:40%"></span>
+            <span style="--h:65%"></span>
+            <span style="--h:50%"></span>
+            <span style="--h:80%"></span>
+            <span style="--h:70%"></span>
+            <span style="--h:95%"></span>
+            <span style="--h:60%"></span>
+          </div>
+        </div>
+      </article>
+
+    </div>
   </div>
-</div></section>
+</section>
 
 <section class="alt" id="planos"><div class="w">
   <h2 class="rev">Comece do seu jeito.</h2>
@@ -300,7 +468,13 @@
   </aside>
 </main>
 </div>
-
-<script src="script.js"></script>
+<script src="js/00-utils.js"></script>
+<script src="js/01-state.js"></script>
+<script src="js/02-router.js"></script>
+<script src="js/03-site.js"></script>
+<script src="js/04-signup.js"></script>
+<script src="js/05-studio.js"></script>
+<script src="js/06-recursos.js"></script>
+<script>JEITO.router.start();</script>
 </body>
 </html>
